@@ -1,3 +1,5 @@
+import { type Address } from 'viem'
+
 import { ponder } from '@/generated'
 import { STPv1Abi } from '../abis/STPv1Abi'
 
@@ -5,9 +7,14 @@ ponder.on('STPv1Factory:Deployment', async ({ event, context }) => {
   const { Collection } = context.db
   const { deployment } = event.args
 
-  const functionCalls = ['name', 'symbol', 'contractURI'] as const
+  const functionCalls = [
+    'name',
+    'symbol',
+    'contractURI',
+    'erc20Address',
+  ] as const
 
-  const [name, symbol, contractURI] = await Promise.all(
+  const [name, symbol, contractURI, erc20Address] = await Promise.all(
     functionCalls.map((functionName) =>
       context.client.readContract({
         address: deployment,
@@ -31,9 +38,10 @@ ponder.on('STPv1Factory:Deployment', async ({ event, context }) => {
     id: deployment,
     data: {
       chainId: context.network.chainId,
-      name: name!,
-      symbol: symbol!,
-      contractURI: contractURI!,
+      name: name as string,
+      symbol: symbol as string,
+      erc20Address: erc20Address as Address,
+      contractURI: contractURI as string,
       totalRewardPoints: 0n,
       totalCreatorEarnings: 0n,
       totalReferrerRewards: 0n,

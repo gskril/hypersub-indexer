@@ -6,6 +6,7 @@ export default createSchema((p) => ({
     chainId: p.int(),
     name: p.string(),
     symbol: p.string(),
+    erc20Address: p.hex(),
     contractURI: p.string(),
     totalRewardPoints: p.bigint(),
     totalCreatorEarnings: p.bigint(),
