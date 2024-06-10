@@ -28,9 +28,11 @@ function App() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-52">Account</TableHead>
-                <TableHead className="min-w-52">Created At</TableHead>
-                <TableHead>Collection</TableHead>
+                <TableHead className="min-w-44 sm:min-w-56">Account</TableHead>
+                <TableHead className="min-w-44 sm:min-w-60">
+                  Created At
+                </TableHead>
+                <TableHead className="min-w-56">Collection</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -69,9 +71,11 @@ function App() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-52">Name</TableHead>
-                <TableHead className="min-w-52">Created At</TableHead>
-                <TableHead className="min-w-52">Chain</TableHead>
+                <TableHead className="min-w-56">Name</TableHead>
+                <TableHead className="min-w-48 sm:min-w-56">
+                  Created At
+                </TableHead>
+                <TableHead className="min-w-32 sm:min-w-48">Chain</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
