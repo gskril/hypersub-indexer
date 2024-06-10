@@ -48,6 +48,7 @@ ponder.on('STPv1Factory:Deployment', async ({ event, context }) => {
       image: metadata.image,
       externalLink: metadata.external_link,
       description: metadata.description,
+      createdAt: event.block.timestamp,
     },
   })
 })

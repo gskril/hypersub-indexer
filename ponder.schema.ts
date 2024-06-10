@@ -17,6 +17,7 @@ export default createSchema((p) => ({
     subscriptions: p.many('Subscription.collectionId'),
     purchaseEvents: p.many('PurchaseEvent.collectionId'),
     grantEvents: p.many('GrantEvent.collectionId'),
+    createdAt: p.bigint(),
   }),
 
   Subscription: p.createTable({
