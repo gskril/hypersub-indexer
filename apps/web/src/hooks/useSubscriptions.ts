@@ -6,12 +6,15 @@ export function useSubcriptions() {
   const query = `
     {
       subscriptions(
-        limit: 1000
+        limit: 500
         where: {
           expiresAt_gt: "${Math.floor(new Date().getTime() / 1000)}"
         }
+        orderBy: "createdAt"
+        orderDirection: "desc"
       ) {
         items {
+          id
           account
           createdAt
           expiresAt
@@ -42,6 +45,7 @@ export function useSubcriptions() {
       const { data } = (await res.json()) as GraphQLResponse<{
         subscriptions: {
           items: {
+            id: string
             account: string
             createdAt: string
             expiresAt: string

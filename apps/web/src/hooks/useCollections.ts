@@ -6,7 +6,7 @@ export function useCollections() {
   const query = `
     {
       collections(
-        limit: 1000
+        limit: 500
         orderBy: "createdAt"
         orderDirection: "desc"
       ) {
