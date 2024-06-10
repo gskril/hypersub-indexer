@@ -1,5 +1,5 @@
 {
-  "name": "hypersub-dashboard",
+  "name": "hypersub-indexer",
   "private": true,
   "type": "module",
   "scripts": {

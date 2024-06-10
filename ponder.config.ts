@@ -1,41 +1,85 @@
-import { createConfig } from "@ponder/core";
-import { parseAbiItem } from "abitype";
-import { http } from "viem";
+import { createConfig } from '@ponder/core'
+import { http } from 'viem'
 
-import { LlamaCoreAbi } from "./abis/LlamaCoreAbi";
-import { LlamaPolicyAbi } from "./abis/LlamaPolicyAbi";
+import { STPv1FactoryAbi } from './abis/STPv1FactoryAbi'
+import { STPv1Abi } from './abis/STPv1Abi'
 
-const llamaFactoryEvent = parseAbiItem(
-  "event LlamaInstanceCreated(address indexed deployer, string indexed name, address llamaCore, address llamaExecutor, address llamaPolicy, uint256 chainId)",
-);
+const factoryDeployments = {
+  mainnet: {
+    address: '0xf1d0C43D301d4d0Fa1Fc1A57aDE0d2Fe9ca853f6',
+    startBlock: 18430200,
+  },
+  optimism: {
+    address: '0x4ABd5D3Af06Ce5356a455Eb5eCDC1f07Aa9C083A',
+    startBlock: 111939833,
+  },
+  base: {
+    address: '0x3BeF7e58a3F357eC98b639df5c24DaC68Ee3A180',
+    startBlock: 6338113,
+  },
+} as const
 
 export default createConfig({
   networks: {
-    sepolia: {
-      chainId: 11155111,
-      transport: http(process.env.PONDER_RPC_URL_11155111),
+    mainnet: {
+      chainId: 1,
+      transport: http(process.env.MAINNET_RPC),
+    },
+    optimism: {
+      chainId: 10,
+      transport: http(process.env.OPTIMISM_RPC),
+    },
+    base: {
+      chainId: 8453,
+      transport: http(process.env.BASE_RPC),
     },
   },
   contracts: {
-    LlamaCore: {
-      network: "sepolia",
-      abi: LlamaCoreAbi,
-      factory: {
-        address: "0xFf5d4E226D9A3496EECE31083a8F493edd79AbEB",
-        event: llamaFactoryEvent,
-        parameter: "llamaCore",
+    STPv1Factory: {
+      abi: STPv1FactoryAbi,
+      network: {
+        mainnet: {
+          address: factoryDeployments.mainnet.address,
+          startBlock: factoryDeployments.mainnet.startBlock,
+        },
+        optimism: {
+          address: factoryDeployments.optimism.address,
+          startBlock: factoryDeployments.optimism.startBlock,
+        },
+        base: {
+          address: factoryDeployments.base.address,
+          startBlock: factoryDeployments.base.startBlock,
+        },
       },
-      startBlock: 4121269,
     },
-    LlamaPolicy: {
-      network: "sepolia",
-      abi: LlamaPolicyAbi,
-      factory: {
-        address: "0xFf5d4E226D9A3496EECE31083a8F493edd79AbEB",
-        event: llamaFactoryEvent,
-        parameter: "llamaPolicy",
+    STPv1: {
+      abi: STPv1Abi,
+      network: {
+        mainnet: {
+          factory: {
+            address: factoryDeployments.mainnet.address,
+            event: STPv1FactoryAbi[3],
+            parameter: 'deployment',
+          },
+          startBlock: factoryDeployments.mainnet.startBlock,
+        },
+        optimism: {
+          factory: {
+            address: factoryDeployments.optimism.address,
+            event: STPv1FactoryAbi[3],
+            parameter: 'deployment',
+          },
+          startBlock: factoryDeployments.optimism.startBlock,
+        },
+        base: {
+          factory: {
+            address: factoryDeployments.base.address,
+            event: STPv1FactoryAbi[3],
+            parameter: 'deployment',
+          },
+          startBlock: factoryDeployments.base.startBlock,
+        },
       },
-      startBlock: 4121269,
     },
   },
-});
+})
