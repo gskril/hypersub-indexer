@@ -32,3 +32,24 @@ export function formatChain(chainId: number) {
       return 'Unknown'
   }
 }
+
+export function breakIntoBatch<T>(arr: T[], batchSize: number) {
+  const batches = []
+
+  for (let i = 0; i < arr.length; i += batchSize) {
+    batches.push(arr.slice(i, i + batchSize))
+  }
+
+  return batches
+}
+
+export function createEtherscanLink(chainId: number, address: string) {
+  switch (chainId) {
+    case 1:
+      return `https://etherscan.io/address/${address}`
+    case 8453:
+      return `https://basescan.org/address/${address}`
+    case 10:
+      return `https://optimistic.etherscan.io/address/${address}`
+  }
+}

@@ -8,19 +8,26 @@ import {
   TableRow,
 } from './components/ui/table'
 import { useCollections } from './hooks/useCollections'
+import { useEnsNames } from './hooks/useEnsNames'
 import { useSubcriptions } from './hooks/useSubscriptions'
-import { cn, formatChain, formatTimestamp, truncateAddress } from './lib/utils'
-
-const cardClasses = cn('max-h-[calc(100svh-3rem)] overflow-scroll')
+import {
+  createEtherscanLink,
+  formatChain,
+  formatTimestamp,
+  truncateAddress,
+} from './lib/utils'
 
 function App() {
   const collections = useCollections()
   const subscriptions = useSubcriptions()
+  const { data: ensNames } = useEnsNames(
+    subscriptions.data?.map((s) => s.account)
+  )
 
   return (
     <>
       <main className="grid gap-4 p-4 sm:gap-6 sm:p-6 lg:grid-cols-2">
-        <Card className={cardClasses}>
+        <Card className="max-h-[calc(100svh-3rem)] overflow-scroll">
           <CardHeader>
             <CardTitle>Subscriptions</CardTitle>
           </CardHeader>
@@ -28,42 +35,58 @@ function App() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-44 sm:min-w-56">Account</TableHead>
+                <TableHead className="min-w-44 sm:min-w-56">
+                  Account &#8599;
+                </TableHead>
                 <TableHead className="min-w-44 sm:min-w-60">
                   Created At
                 </TableHead>
-                <TableHead className="min-w-56">Collection</TableHead>
+                <TableHead className="min-w-56">Collection &#8599;</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {(() => {
                 if (subscriptions.data) {
-                  return subscriptions.data.map((subscription) => (
-                    <TableRow key={subscription.id}>
-                      <TableCell>
-                        {truncateAddress(subscription.account)}
-                      </TableCell>
-                      <TableCell>
-                        {formatTimestamp(subscription.createdAt)}
-                      </TableCell>
-                      <TableCell>
-                        <a
-                          className="hover:opacity-60"
-                          href={subscription.collection.externalLink}
-                          target="_blank"
-                        >
-                          {subscription.collection.name} &#8599;
-                        </a>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  return subscriptions.data.map((subscription) => {
+                    const { account, createdAt, collection } = subscription
+                    const ensName = ensNames?.get(subscription.account)
+
+                    return (
+                      <TableRow key={subscription.id}>
+                        <TableCell>
+                          <a
+                            className="hover:opacity-60"
+                            href={createEtherscanLink(
+                              collection.chainId,
+                              account
+                            )}
+                            target="_blank"
+                          >
+                            {ensName && ensName.length < 20
+                              ? ensName
+                              : truncateAddress(account)}
+                          </a>
+                        </TableCell>
+                        <TableCell>{formatTimestamp(createdAt)}</TableCell>
+                        <TableCell>
+                          <a
+                            className="hover:opacity-60"
+                            href={collection.externalLink}
+                            target="_blank"
+                          >
+                            {collection.name}
+                          </a>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
                 }
               })()}
             </TableBody>
           </Table>
         </Card>
 
-        <Card className={cardClasses}>
+        <Card className="max-h-[calc(100svh-3rem)] overflow-scroll">
           <CardHeader>
             <CardTitle>Collections</CardTitle>
           </CardHeader>
@@ -71,7 +94,7 @@ function App() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-56">Name</TableHead>
+                <TableHead className="min-w-56">Name &#8599;</TableHead>
                 <TableHead className="min-w-48 sm:min-w-56">
                   Created At
                 </TableHead>
@@ -89,7 +112,7 @@ function App() {
                           href={collection.externalLink}
                           target="_blank"
                         >
-                          {collection.name} &#8599;
+                          {collection.name}
                         </a>
                       </TableCell>
                       <TableCell>
