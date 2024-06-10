@@ -21,6 +21,7 @@ export default createSchema((p) => ({
   Membership: p.createTable({
     id: p.string(), // collectionId:account
     account: p.hex(),
+    tokenId: p.bigint(),
     purchaseEvents: p.many('PurchaseEvent.membershipId'),
     grantEvents: p.many('GrantEvent.membershipId'),
     collectionId: p.hex().references('Collection.id'),

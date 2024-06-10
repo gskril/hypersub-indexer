@@ -2,7 +2,8 @@ import { ponder } from '@/generated'
 
 ponder.on('STPv1:Purchase', async ({ event, context }) => {
   const { Collection, Membership, PurchaseEvent } = context.db
-  const { account, tokensTransferred, rewardPoints, expiresAt } = event.args
+  // prettier-ignore
+  const { account, tokenId, tokensTransferred, rewardPoints, expiresAt } = event.args
   const collectionId = event.log.address
   const membershipId = `${collectionId}:${account}`
 
@@ -21,6 +22,7 @@ ponder.on('STPv1:Purchase', async ({ event, context }) => {
     id: membershipId,
     create: {
       account,
+      tokenId,
       collectionId,
       expiresAt,
       createdAt: event.block.timestamp,
@@ -41,7 +43,7 @@ ponder.on('STPv1:Purchase', async ({ event, context }) => {
 
 ponder.on('STPv1:Grant', async ({ event, context }) => {
   const { GrantEvent, Membership } = context.db
-  const { account, expiresAt } = event.args
+  const { account, tokenId, expiresAt } = event.args
   const collectionId = event.log.address
   const membershipId = `${collectionId}:${account}`
 
@@ -60,6 +62,7 @@ ponder.on('STPv1:Grant', async ({ event, context }) => {
     id: membershipId,
     create: {
       account,
+      tokenId,
       collectionId,
       expiresAt,
       createdAt: event.block.timestamp,
