@@ -1,4 +1,9 @@
-import { Card, CardHeader, CardTitle } from './components/ui/card'
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './components/ui/card'
 import {
   Table,
   TableBody,
@@ -30,6 +35,9 @@ function App() {
         <Card className="max-h-[calc(100svh-3rem)] overflow-scroll">
           <CardHeader>
             <CardTitle>Subscriptions</CardTitle>
+            <CardDescription>
+              500 most recent purchase events (initial or renewal)
+            </CardDescription>
           </CardHeader>
 
           <Table>
@@ -89,6 +97,9 @@ function App() {
         <Card className="max-h-[calc(100svh-3rem)] overflow-scroll">
           <CardHeader>
             <CardTitle>Collections</CardTitle>
+            <CardDescription>
+              500 most recent Hypersub deployments
+            </CardDescription>
           </CardHeader>
 
           <Table>
@@ -127,6 +138,29 @@ function App() {
           </Table>
         </Card>
       </main>
+
+      <footer className="p-4 !pt-0 sm:gap-6 sm:p-6">
+        <p>
+          Created by{' '}
+          <a
+            className="text-blue-500 hover:text-blue-400"
+            href="https://warpcast.com/greg"
+            target="_blank"
+          >
+            @greg &#8599;
+          </a>
+        </p>
+        <p>
+          Read the code on{' '}
+          <a
+            className="text-blue-500 hover:text-blue-400"
+            href="https://github.com/gskril/hypersub-indexer"
+            target="_blank"
+          >
+            GitHub &#8599;
+          </a>
+        </p>
+      </footer>
     </>
   )
 }
