@@ -48,7 +48,7 @@ function App() {
               {(() => {
                 if (subscriptions.data) {
                   return subscriptions.data.map((subscription) => {
-                    const { account, createdAt, collection } = subscription
+                    const { account, timestamp, collection } = subscription
                     const ensName = ensNames?.get(subscription.account)
 
                     return (
@@ -67,7 +67,7 @@ function App() {
                               : truncateAddress(account)}
                           </a>
                         </TableCell>
-                        <TableCell>{formatTimestamp(createdAt)}</TableCell>
+                        <TableCell>{formatTimestamp(timestamp)}</TableCell>
                         <TableCell>
                           <a
                             className="hover:opacity-60"

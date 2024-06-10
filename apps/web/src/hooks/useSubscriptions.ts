@@ -5,18 +5,15 @@ import { GraphQLResponse } from '@/lib/types'
 export function useSubcriptions() {
   const query = `
     {
-      subscriptions(
+      purchaseEvents(
         limit: 500
-        where: {
-          expiresAt_gt: "${Math.floor(new Date().getTime() / 1000)}"
-        }
-        orderBy: "createdAt"
+        orderBy: "timestamp"
         orderDirection: "desc"
       ) {
         items {
           id
           account
-          createdAt
+          timestamp
           expiresAt
           collection {
             id
@@ -43,11 +40,11 @@ export function useSubcriptions() {
       })
 
       const { data } = (await res.json()) as GraphQLResponse<{
-        subscriptions: {
+        purchaseEvents: {
           items: {
             id: string
             account: string
-            createdAt: string
+            timestamp: string
             expiresAt: string
             collection: {
               id: string
@@ -60,7 +57,7 @@ export function useSubcriptions() {
         }
       }>
 
-      return data?.subscriptions.items || []
+      return data?.purchaseEvents.items || []
     },
   })
 }
