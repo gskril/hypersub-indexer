@@ -65,6 +65,12 @@ Install dependencies:
 pnpm install
 ```
 
+Navigate to the ponder app:
+
+```bash
+cd apps/indexer
+```
+
 Set your environment variables (RPC URLs):
 
 ```bash
