@@ -1,25 +1,25 @@
 import { ponder } from '@/generated'
 
 ponder.on('STPv1:Purchase', async ({ event, context }) => {
-  const { Collection, Membership, PurchaseEvent } = context.db
+  const { Collection, Subscription, PurchaseEvent } = context.db
   // prettier-ignore
   const { account, tokenId, tokensTransferred, rewardPoints, expiresAt } = event.args
   const collectionId = event.log.address
-  const membershipId = `${collectionId}:${account}`
+  const subscriptionId = `${collectionId}:${account}`
 
   await PurchaseEvent.create({
     id: event.log.id,
     data: {
       ...event.args,
-      membershipId,
+      subscriptionId,
       chainId: context.network.chainId,
       collectionId,
       timestamp: event.block.timestamp,
     },
   })
 
-  await Membership.upsert({
-    id: membershipId,
+  await Subscription.upsert({
+    id: subscriptionId,
     create: {
       account,
       tokenId,
@@ -42,24 +42,24 @@ ponder.on('STPv1:Purchase', async ({ event, context }) => {
 })
 
 ponder.on('STPv1:Grant', async ({ event, context }) => {
-  const { GrantEvent, Membership } = context.db
+  const { GrantEvent, Subscription } = context.db
   const { account, tokenId, expiresAt } = event.args
   const collectionId = event.log.address
-  const membershipId = `${collectionId}:${account}`
+  const subscriptionId = `${collectionId}:${account}`
 
   await GrantEvent.create({
     id: event.log.id,
     data: {
       ...event.args,
-      membershipId,
+      subscriptionId,
       chainId: context.network.chainId,
       collectionId,
       timestamp: event.block.timestamp,
     },
   })
 
-  await Membership.upsert({
-    id: membershipId,
+  await Subscription.upsert({
+    id: subscriptionId,
     create: {
       account,
       tokenId,

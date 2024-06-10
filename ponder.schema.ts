@@ -14,17 +14,17 @@ export default createSchema((p) => ({
     image: p.string().optional(),
     externalLink: p.string().optional(),
     description: p.string().optional(),
-    memberships: p.many('Membership.collectionId'),
+    subscriptions: p.many('Subscription.collectionId'),
     purchaseEvents: p.many('PurchaseEvent.collectionId'),
     grantEvents: p.many('GrantEvent.collectionId'),
   }),
 
-  Membership: p.createTable({
+  Subscription: p.createTable({
     id: p.string(), // collectionId:account
     account: p.hex(),
     tokenId: p.bigint(),
-    purchaseEvents: p.many('PurchaseEvent.membershipId'),
-    grantEvents: p.many('GrantEvent.membershipId'),
+    purchaseEvents: p.many('PurchaseEvent.subscriptionId'),
+    grantEvents: p.many('GrantEvent.subscriptionId'),
     collectionId: p.hex().references('Collection.id'),
     collection: p.one('collectionId'),
     expiresAt: p.bigint(),
@@ -34,8 +34,8 @@ export default createSchema((p) => ({
   PurchaseEvent: p.createTable({
     id: p.string(),
     chainId: p.int(),
-    membershipId: p.string().references('Membership.id'),
-    membership: p.one('membershipId'),
+    subscriptionId: p.string().references('Subscription.id'),
+    subscription: p.one('subscriptionId'),
     collectionId: p.hex().references('Collection.id'),
     collection: p.one('collectionId'),
     account: p.hex(),
@@ -50,8 +50,8 @@ export default createSchema((p) => ({
   GrantEvent: p.createTable({
     id: p.string(),
     chainId: p.int(),
-    membershipId: p.string().references('Membership.id'),
-    membership: p.one('membershipId'),
+    subscriptionId: p.string().references('Subscription.id'),
+    subscription: p.one('subscriptionId'),
     collectionId: p.hex().references('Collection.id'),
     collection: p.one('collectionId'),
     account: p.hex(),
