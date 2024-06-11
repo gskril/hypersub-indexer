@@ -30,7 +30,7 @@ export function useCollections() {
     refetchInterval: 5000,
     queryKey: ['collections'],
     queryFn: async () => {
-      const res = await fetch('https://hypersub-indexer.up.railway.app/', {
+      const res = await fetch('https://stp-api.gregskril.com/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

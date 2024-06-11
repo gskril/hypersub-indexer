@@ -31,7 +31,7 @@ export function useSubcriptions() {
     refetchInterval: 5000,
     queryKey: ['subscriptions'],
     queryFn: async () => {
-      const res = await fetch('https://hypersub-indexer.up.railway.app/', {
+      const res = await fetch('https://stp-api.gregskril.com/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
